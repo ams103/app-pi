@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Bild editor online</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.1.2/caman.full.min.js"></script>
+
+  <script>
+  $(function() {
+    var pic = $("#pic");
+    var vbtn = $("#vintageBtn");
+    var ibtn = $("#invertBtn");
+    var nbtn = $("#noiseBtn");
+    var tiltshift = $("#tiltshiftBtn");
+    var sliders = $('input[type=range]');
+    vbtn.on('click', function() {
+      Caman('#pic', function() {
+        this.vintage();
+        this.render();
+      });
+    });
+    ibtn.on('click', function() {
+      Caman('#pic', function() {
+        this.sepia(50).render();
+      });
+    });
+    nbtn.on('click', function() {
+      Caman('#pic', function() {
+        this.noise(10);
+        this.render();
+      });
+    });
+    tiltshift.on('click', function(e) {
+      Caman('#pic', function() {
+        this.tiltShift({
+          angle: 45,
+          focusWidth: 600
+        }).render();
+      });
+    });
+    sliders.on('change', function(e) {
+      var hue = parseInt($('#hue').val());
+      var cntrst = parseInt($('#contrast').val());
+      var gamma = parseInt($('gamma').val());
+        Caman('#pic', 'bild.jpg', function() {
+          this.revert(false);
+          this.hue(hue);
+          this.contrast(cntrst);
+          this.gamma(gamma);
+          this.render();
+      });
+    });
+  });
+
+  </script>
+</head>
+<body>
+  <form id="silderInput">
+    <label for="hue">Hue</label>
+    <input id="hue" name="hue" type="range" min="0" max="300" value="0">
+
+    <label for="contrast">Contrast</label>
+    <input id="contrast" name="contrast" type="range" min="-20" max="20" value="1">
+
+    <label for="gamma">Gamma</label>
+    <input id="gamma" name="gamma" type="range" min="-20" max="20" value="1">
+
+  </form>
+  <img src="bild.jpg" id="pic" /><br>
+  <canvas id="canvas"></canvas>
+  <br>
+  <button id="vintageBtn">Vintage</button>
+  <button id="invertBtn">Invert</button>
+  <button id="noiseBtn">Noise</button>
+  <button id="tiltshiftBtn">Tilt Shift</button>
+
+
+      </div>
+    </body>
+    </html>
